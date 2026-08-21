@@ -1,0 +1,14 @@
+br\edu\compilador\Main.class
+br\edu\compilador\ui\EditorPanel.class
+br\edu\compilador\MainFrame.class
+br\edu\compilador\ui\MessagePanel.class
+br\edu\compilador\file\FileManager.class
+br\edu\compilador\ui\EditorPanel$1.class
+br\edu\compilador\controller\EditorController$1.class
+br\edu\compilador\ui\ToolbarPanel.class
+br\edu\compilador\model\DocumentState.class
+br\edu\compilador\ui\StatusBarPanel.class
+br\edu\compilador\controller\EditorController.class
+br\edu\compilador\util\IconFactory$DrawCommand.class
+br\edu\compilador\util\IconFactory.class
+br\edu\compilador\file\FileManager$OpenFileResult.class
