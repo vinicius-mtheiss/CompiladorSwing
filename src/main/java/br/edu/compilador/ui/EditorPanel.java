@@ -13,6 +13,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
+import br.edu.compilador.util.ScrollPaneFactory;
+
 public class EditorPanel extends JPanel {
 
     private static final Font EDITOR_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 14);
@@ -35,10 +37,8 @@ public class EditorPanel extends JPanel {
         lineNumberArea.setFocusable(false);
         lineNumberArea.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 
-        scrollPane = new JScrollPane(editorArea);
+        scrollPane = ScrollPaneFactory.createAlwaysVisibleScrollPane(editorArea);
         scrollPane.setRowHeaderView(lineNumberArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         editorArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override

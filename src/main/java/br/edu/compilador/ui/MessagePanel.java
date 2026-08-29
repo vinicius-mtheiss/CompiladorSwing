@@ -4,8 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import br.edu.compilador.util.ScrollPaneFactory;
 
 public class MessagePanel extends JPanel {
 
@@ -17,9 +18,7 @@ public class MessagePanel extends JPanel {
         messageArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
         messageArea.setLineWrap(false);
 
-        JScrollPane scrollPane = new JScrollPane(messageArea);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        var scrollPane = ScrollPaneFactory.createAlwaysVisibleScrollPane(messageArea);
 
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);

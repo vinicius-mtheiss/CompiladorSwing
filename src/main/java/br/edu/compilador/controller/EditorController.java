@@ -26,9 +26,9 @@ public class EditorController {
     private static final String TEAM_MESSAGE = """
             Equipe de desenvolvimento:
 
-            Nome 1
-            Nome 2
-            Nome 3
+            Vinícius Martins Theiss
+            Pedro França de Carvalho
+            Bernardo Henrique Rech
             """;
 
     private final Component parent;
