@@ -1,3 +1,5 @@
+package br.edu.compilador.ArquivosGals;
+
 public class AnalysisError extends Exception
 {
     private int position;

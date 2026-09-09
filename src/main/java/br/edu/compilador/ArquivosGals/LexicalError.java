@@ -1,3 +1,5 @@
+package br.edu.compilador.ArquivosGals;
+
 public class LexicalError extends AnalysisError
 {
     public LexicalError(String msg, int position)

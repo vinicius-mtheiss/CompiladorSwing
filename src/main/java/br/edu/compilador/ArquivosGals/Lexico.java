@@ -1,3 +1,5 @@
+package br.edu.compilador.ArquivosGals;
+
 public class Lexico implements Constants
 {
     private int position;

@@ -1,3 +1,5 @@
+package br.edu.compilador.ArquivosGals;
+
 public interface ScannerConstants
 {
     int[] SCANNER_TABLE_INDEXES = 
@@ -1286,11 +1288,9 @@ public interface ScannerConstants
 
     String[] SCANNER_ERROR =
     {
-        "Simbolo invalido" //"Caractere não esperado",
+        "símbolo inválido", //"Caractere não esperado",
         "",
-        "constante_string invalida" //"Erro identificando constante_string",
-        "",
-        "",
+        "constante_string inválida", //"Erro identificando constante_string",
         "",
         "",
         "",
@@ -1303,7 +1303,9 @@ public interface ScannerConstants
         "",
         "",
         "",
-        "Erro identificando <ignorar>",
+        "",
+        "comentário inválido ou não finalizado", //""Erro identificando <ignorar>",
+        "",
         "",
         "",
         "",
