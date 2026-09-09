@@ -1,0 +1,69 @@
+#Options
+GenerateScanner = true
+GenerateParser = false
+Language = Java
+ScannerName = Lexico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = String
+#RegularDefinitions
+mai: [A-Z]
+min: [a-z]
+letra: {mai} | {min}
+dig: [0-9]
+
+Comentario_de_bloco: "\"\"[^"\"\"]*\""\"
+#Tokens
+Palavra_reservada:! {min} ( {mai} {min} | {min})*
+Identificador_de_int:! i_{letra}( {letra} | {dig} )*
+Identificador_de_float:! f_{letra}( {letra} | {dig} )*
+Identificador_de_stirng:! s_{letra}( {letra} | {dig} )*
+Identificador_de_bool:! b_{letra}( {letra} | {dig} )*
+constante_int:! {dig}+
+constante_float:! {dig}+,{dig}+
+constante_string:! \"[^\n\"\\]*\"
+
+//and false if in isFalseDo isTrueDo module not or out true while
+
+and =Palavra_reservada: "and"
+false =Palavra_reservada: "false"
+if =Palavra_reservada: "if"
+in =Palavra_reservada: "in"
+isFlaseDo = Palavra_reservada: "isFlaseDo"
+isTrueDo =Palavra_reservada: "isTrueDo"
+module =Palavra_reservada: "module"
+not =Palavra_reservada: "not"
+or =Palavra_reservada: "or"
+out =Palavra_reservada: "out"
+true =Palavra_reservada: "true"
+while =Palavra_reservada: "while"
+
+//, : ; [ ] ( ) { } + - * / <- = <> < > 
+
+","
+":"
+";"
+"["
+"]"
+"("
+")"
+"{"
+"}"
+"+"
+"-"
+"*"
+"/"
+"<-"
+"="
+"<>"
+"<"
+">"
+
+
+//formatação
+:[\n\t\s]
+
+//comentario
+:! {Comentario_de_bloco}
+
+
