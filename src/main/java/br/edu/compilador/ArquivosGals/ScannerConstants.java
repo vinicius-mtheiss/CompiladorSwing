@@ -1281,7 +1281,7 @@ public interface ScannerConstants
         { 0, 0, 0, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 };
 
     String[] SPECIAL_CASES_KEYS =
-        {  "and", "false", "if", "in", "isFlaseDo", "isTrueDo", "module", "not", "or", "out", "true", "while" };
+        {  "and", "false", "if", "in", "isFalseDo", "isTrueDo", "module", "not", "or", "out", "true", "while" };
 
     int[] SPECIAL_CASES_VALUES =
         {  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
@@ -1291,6 +1291,7 @@ public interface ScannerConstants
         "símbolo inválido", //"Caractere não esperado",
         "",
         "constante_string inválida", //"Erro identificando constante_string",
+        "",
         "",
         "",
         "",
@@ -1314,18 +1315,17 @@ public interface ScannerConstants
         "",
         "",
         "",
+        "constante_float inválida",// "Erro identificando constante_float",
         "",
-        "Erro identificando constante_float",
         "",
+        "comentário inválido ou não finalizado", //""Erro identificando <ignorar>",
+        "palavra reservada inválida",//"Erro identificando Palavra_reservada",
+        "identificador inválido",//"Erro identificando Identificador_de_bool",
+        "identificador inválido",//"Erro identificando Identificador_de_float",
+        "identificador inválido",//"Erro identificando Identificador_de_int",
+        "identificador inválido",//"Erro identificando Identificador_de_stirng",
         "",
-        "Erro identificando <ignorar>",
-        "Erro identificando Palavra_reservada",
-        "Erro identificando Identificador_de_bool",
-        "Erro identificando Identificador_de_float",
-        "Erro identificando Identificador_de_int",
-        "Erro identificando Identificador_de_stirng",
-        "",
-        "Erro identificando <ignorar>",
+        "comentário inválido ou não finalizado", //""Erro identificando <ignorar>",
         "",
         "",
         "",

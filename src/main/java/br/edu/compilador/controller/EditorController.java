@@ -155,36 +155,102 @@ public class EditorController {
 
     private void compilar() {
         Lexico lexico = new Lexico();
-        lexico.setInput(editorPanel.getText());
+        String texto = editorPanel.getText();
+        lexico.setInput(texto);
+        StringBuilder saida = new StringBuilder();
+        saida.append(String.format("%-7s%-20s%s\n", "linha", "classe", "lexema"));
+
         try {
             Token t = null;
+
             while ((t = lexico.nextToken()) != null) {
-                System.out.println(t.getLexeme());
-                messagePanel.clearMessages();
-                messagePanel.setMessage(t.toString());
+                int linha = calcularLinha(texto, t.getPosition());
 
-                // só escreve o lexema, necessário escrever t.getId, t.getPosition()
+                if (t.getId() == 2) {
+                    exibirErro("linha " + linha + ": " + t.getLexeme() + " palavra reservada inválida");
+                    return;
+                }
 
-                // t.getId () - retorna o identificador da classe (ver Constants.java)
-                // necessário adaptar, pois deve ser apresentada a classe por extenso
+                saida.append(String.format("%-7s%-20s%s\n", linha, classeDoToken(t.getId()), t.getLexeme()));
 
-                // t.getPosition () - retorna a posição inicial do lexema no editor
-                // necessário adaptar para mostrar a linha
-
-                // esse código apresenta os tokens enquanto não ocorrer erro
-                // no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro,
-                // necessário adaptar para atender o que foi solicitado
             }
+            messagePanel.clearMessages();
+            messagePanel.setMessage(saida + "\nprograma compilado com sucesso");
         } catch (LexicalError e) { // tratamento de erros
-            System.out.println(e.getMessage() + " em " + e.getPosition());
+            int linha = calcularLinha(texto, e.getPosition());
+            String msg = e.getMessage();
 
-            // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (ver
-            // ScannerConstants.java)
-            // necessário adaptar conforme o enunciado da parte 2
-
-            // e.getPosition() - retorna a posição inicial do erro
-            // necessário adaptar para mostrar a linha
+            if (msg.equals("símbolo inválido") && e.getPosition() < texto.length())
+            {
+                exibirErro("linha " + linha + ": " + texto.charAt(e.getPosition()) + " " + msg);
+            }
+            else if (msg.equals("palavra reservada inválida"))
+            {
+                exibirErro("linha " + linha + ": " + extrairPalavra(texto, e.getPosition()) + " " + msg);
+            }
+            else
+            {
+                exibirErro("linha " + linha + ": " + msg);
+            }
         }
+    }
+
+    private String extrairPalavra(String texto, int inicio) {
+        int fim = inicio;
+        while (fim < texto.length() && (Character.isLetterOrDigit(texto.charAt(fim)) || texto.charAt(fim) == '_')) {
+            fim++;
+        }
+        return texto.substring(inicio, fim);
+    }
+
+    private String classeDoToken(int id) {
+
+        if(id >= 10 && id <= 21)
+        {
+            return "palavra reservada";
+        }
+
+        if(id >= 3 && id <= 6)
+        {
+            return "identificador";
+        }
+
+        if(id >= 22 && id <= 39)
+        {
+            return "símbolo especial";
+        }
+
+        if(id == 7)
+        {
+            return "constante_int";
+        }
+
+        if(id == 8)
+        {
+            return "constante_float";
+        }
+
+        if(id == 9)
+        {
+            return "constante_string";
+        }
+        return "";
+    }
+
+    private void exibirErro(String mensagem) {
+        messagePanel.clearMessages();
+        messagePanel.setMessage(mensagem);
+    }
+
+    private int calcularLinha(String texto, int posicao) {
+        int linha = 1;
+        for (int i = 0; i < posicao && i < texto.length(); i++) {
+            if (texto.charAt(i) == '\n')
+            {
+                linha++;
+            }
+        }
+        return linha;
     }
 
     private void equipe() {
