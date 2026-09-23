@@ -1,0 +1,151 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = String
+Parser = LL
+#RegularDefinitions
+mai: [A-Z]
+min: [a-z]
+letra: {mai} | {min}
+dig: [0-9]
+
+Comentario_de_bloco: "\"\"[^"\"\"]*\""\"
+#Tokens
+Palavra_reservada:! {min} ( {mai} {min} | {min})*
+Identificador_de_int:! i_{letra}( {letra} | {dig} )*
+Identificador_de_float:! f_{letra}( {letra} | {dig} )*
+Identificador_de_stirng:! s_{letra}( {letra} | {dig} )*
+Identificador_de_bool:! b_{letra}( {letra} | {dig} )*
+constante_int:! {dig}+
+constante_float:! {dig}+,{dig}+
+constante_string:! \"[^\n\"\\]*\"
+
+//and false if in isFalseDo isTrueDo module not or out true while
+
+and =Palavra_reservada: "and"
+false =Palavra_reservada: "false"
+if =Palavra_reservada: "if"
+in =Palavra_reservada: "in"
+isFalseDo = Palavra_reservada: "isFalseDo"
+isTrueDo =Palavra_reservada: "isTrueDo"
+module =Palavra_reservada: "module"
+not =Palavra_reservada: "not"
+or =Palavra_reservada: "or"
+out =Palavra_reservada: "out"
+true =Palavra_reservada: "true"
+while =Palavra_reservada: "while"
+
+//, : ; [ ] ( ) { } + - * / <- = <> < > 
+
+","
+":"
+";"
+"["
+"]"
+"("
+")"
+"{"
+"}"
+"+"
+"-"
+"*"
+"/"
+"<-"
+"="
+"<>"
+"<"
+">"
+
+
+//formatação
+:[\n\t\s]
+
+//comentario
+:! {Comentario_de_bloco}
+
+
+#NonTerminals
+<forma_geral>
+
+<declaracao_variaveis>
+
+<comando>
+
+<lista_comandos>
+
+<lista_variaveis>
+
+<lista_identificadores_array>
+
+<identificador_array>
+
+<identificador_colchetes_int>
+
+<lista_identificadores_expressao>
+
+<identificador_expressao>
+
+<identificador_colchetes_expressao>
+
+<comando_atribuicao>
+
+<expressao>
+
+<comando_entrada_dados>
+
+<lista_expressoes>
+
+<comando_saida_dados>
+
+<comando_selecao>
+
+<isFalseDo_opcional>
+
+<isTrueDo_opcional>
+
+<comando_repeticao>
+#Grammar
+<forma_geral> ::= module <declaracao_variaveis> "{" <lista_comandos> "}";
+
+<lista_comandos> ::= <comando> | <comando> <lista_comandos>;
+
+<comando> ::= <comando_atribuicao> | <comando_entrada_dados> | <comando_saida_dados> | <comando_selecao> | <comando_repeticao>;
+
+<declaracao_variaveis> ::= <lista_variaveis>;
+
+<lista_variaveis> ::= <lista_identificadores_array> | î;
+
+<lista_identificadores_array> ::=<identificador_array> | <identificador_array> "," <lista_identificadores_array>;
+
+<identificador_array> ::= Identificador_de_int<identificador_colchetes_int> | Identificador_de_float<identificador_colchetes_int> | Identificador_de_stirng<identificador_colchetes_int> | Identificador_de_bool<identificador_colchetes_int>;
+
+<identificador_colchetes_int> ::= "["constante_int"]" | î;
+
+<lista_identificadores_expressao> ::= <identificador_expressao> | <identificador_expressao> "," <lista_identificadores_expressao>;
+
+<identificador_expressao> ::= Identificador_de_int<identificador_colchetes_expressao> | Identificador_de_float<identificador_colchetes_expressao> | Identificador_de_stirng<identificador_colchetes_expressao> | Identificador_de_bool<identificador_colchetes_expressao>;
+
+<identificador_colchetes_expressao> ::= "["<expressao>"]" | î;
+
+<comando_atribuicao> ::= <identificador_expressao> "<-" <expressao>;
+
+<comando_entrada_dados> ::= in "(" <lista_identificadores_expressao> ")";
+
+<comando_saida_dados> ::= out "(" <lista_expressoes> ")";
+
+<lista_expressoes> ::= <expressao> | <expressao> "," <lista_expressoes>;
+
+<comando_selecao> ::= if "(" <expressao> ")" isTrueDo "{" <lista_comandos> "}" <isFalseDo_opcional> | if "(" <expressao> ")" isFalseDo "{" <lista_comandos> "}" <isTrueDo_opcional>;
+
+<isFalseDo_opcional> ::= isFalseDo "{"  <lista_comandos> "}" | î;
+
+<isTrueDo_opcional> ::= isTrueDo "{"  <lista_comandos> "}" | î;
+
+<comando_repeticao> ::= while "(" <expressao> ")" isTrueDo  "{" <lista_comandos> "}" | while "(" <expressao> ")" isFalseDo  "{" <lista_comandos> "}";
+
