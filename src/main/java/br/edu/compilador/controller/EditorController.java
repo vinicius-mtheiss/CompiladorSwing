@@ -12,9 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
-import br.edu.compilador.ArquivosGals.LexicalError;
-import br.edu.compilador.ArquivosGals.Lexico;
-import br.edu.compilador.ArquivosGals.Token;
+import br.edu.compilador.ArquivosGals.*;
 import br.edu.compilador.file.FileManager;
 import br.edu.compilador.model.DocumentState;
 import br.edu.compilador.ui.EditorPanel;
@@ -155,12 +153,16 @@ public class EditorController {
 
     private void compilar() {
         Lexico lexico = new Lexico();
+        Sintatico sintatico = new Sintatico();
+        Semantico semantico = new Semantico();
         String texto = editorPanel.getText();
-        lexico.setInput(texto);
+        lexico.setInput(new java.io.StringReader(texto));
         StringBuilder saida = new StringBuilder();
         saida.append(String.format("%-7s%-20s%s\n", "linha", "classe", "lexema"));
 
         try {
+            sintatico.parse(lexico, semantico);
+            /*
             Token t = null;
 
             while ((t = lexico.nextToken()) != null) {
@@ -174,8 +176,11 @@ public class EditorController {
                 saida.append(String.format("%-7s%-20s%s\n", linha, classeDoToken(t.getId()), t.getLexeme()));
 
             }
+            */
             messagePanel.clearMessages();
             messagePanel.setMessage(saida + "\nprograma compilado com sucesso");
+
+
         } catch (LexicalError e) { // tratamento de erros
             int linha = calcularLinha(texto, e.getPosition());
             String msg = e.getMessage();
@@ -192,6 +197,12 @@ public class EditorController {
             {
                 exibirErro("linha " + linha + ": " + msg);
             }
+        } catch (SyntaticError e) {
+            int linha = calcularLinha(texto, e.getPosition());
+            String msg = e.getMessage();
+        }
+        catch (SemanticError e) {
+            throw new RuntimeException(e);
         }
     }
 
