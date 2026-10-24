@@ -157,53 +157,71 @@ public class EditorController {
         Semantico semantico = new Semantico();
         String texto = editorPanel.getText();
         lexico.setInput(new java.io.StringReader(texto));
-        StringBuilder saida = new StringBuilder();
-        saida.append(String.format("%-7s%-20s%s\n", "linha", "classe", "lexema"));
 
-        try {
+        try
+        {
             sintatico.parse(lexico, semantico);
-            /*
-            Token t = null;
-
-            while ((t = lexico.nextToken()) != null) {
-                int linha = calcularLinha(texto, t.getPosition());
-
-                if (t.getId() == 2) {
-                    exibirErro("linha " + linha + ": " + t.getLexeme() + " palavra reservada inválida");
-                    return;
-                }
-
-                saida.append(String.format("%-7s%-20s%s\n", linha, classeDoToken(t.getId()), t.getLexeme()));
-
-            }
-            */
             messagePanel.clearMessages();
-            messagePanel.setMessage(saida + "\nprograma compilado com sucesso");
-
-
-        } catch (LexicalError e) { // tratamento de erros
+            messagePanel.setMessage("programa compilado com sucesso");
+        }
+        catch (LexicalError e)
+        {
             int linha = calcularLinha(texto, e.getPosition());
-            String msg = e.getMessage();
+            messagePanel.clearMessages();
+            messagePanel.setMessage("linha " + linha + ": erro léxico");
+        }
+        catch (SyntaticError e)
+        {
+            int linha = calcularLinha(texto, e.getPosition());
+            Token t = encontrarToken(texto, e.getPosition());
 
-            if (msg.equals("símbolo inválido") && e.getPosition() < texto.length())
+            messagePanel.clearMessages();
+            if (t != null && t.getId() == 2)
             {
-                exibirErro("linha " + linha + ": " + texto.charAt(e.getPosition()) + " " + msg);
-            }
-            else if (msg.equals("palavra reservada inválida"))
-            {
-                exibirErro("linha " + linha + ": " + extrairPalavra(texto, e.getPosition()) + " " + msg);
+                messagePanel.setMessage("linha " + linha + ": erro léxico");
             }
             else
             {
-                exibirErro("linha " + linha + ": " + msg);
+                messagePanel.setMessage("linha " + linha + ": encontrado " + descreverEncontrado(t) + " esperado " + e.getMessage());
             }
-        } catch (SyntaticError e) {
-            int linha = calcularLinha(texto, e.getPosition());
-            String msg = e.getMessage();
         }
-        catch (SemanticError e) {
-            throw new RuntimeException(e);
+        catch (SemanticError e)
+        {
+            messagePanel.clearMessages();
+            messagePanel.setMessage("erro semântico: " + e.getMessage());
         }
+    }
+
+    private Token encontrarToken(String texto, int posicao) {
+        Lexico lexico = new Lexico();
+        lexico.setInput(new java.io.StringReader(texto));
+        try
+        {
+            Token t;
+            while ((t = lexico.nextToken()) != null)
+            {
+                if (t.getPosition() == posicao)
+                {
+                    return t;
+                }
+            }
+        }
+        catch (LexicalError ignorado) {
+            // não ocorre antes da posição de um erro sintático
+        }
+        return null;
+    }
+
+    private String descreverEncontrado(Token t) {
+        if (t == null)
+        {
+            return "EOF";
+        }
+        if (t.getId() == 9)
+        {
+            return "constante_string";
+        }
+        return t.getLexeme();
     }
 
     private String extrairPalavra(String texto, int inicio) {
